@@ -21,6 +21,7 @@ export function SignUpForm({
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -28,33 +29,54 @@ export function SignUpForm({
   const router = useRouter();
 
   const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const supabase = createClient();
-    setIsLoading(true);
-    setError(null);
+  e.preventDefault();
+  const supabase = createClient();
+  setIsLoading(true);
+  setError(null);
 
-    if (password !== repeatPassword) {
-      setError("Passwords do not match");
-      setIsLoading(false);
-      return;
+  if (password !== repeatPassword) {
+    setError("Passwords do not match");
+    setIsLoading(false);
+    return;
+  }
+
+  try {
+    // Step 1: Check if username already exists BEFORE signUp
+    const { data: existingUsers, error: checkError } = await supabase.from("player").select("username").eq("username", username);
+    if (checkError) throw checkError;
+    if (existingUsers && existingUsers.length > 0) {
+      throw new Error("That username is already taken.");
     }
 
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/protected`,
-        },
-      });
-      if (error) throw error;
-      router.push("/auth/sign-up-success");
-    } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred");
-    } finally {
-      setIsLoading(false);
+    // Step 2: Proceed with sign up only if username is unique
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/protected`,
+      },
+    });
+
+    if (error || !data.user) throw error;
+
+    // Step 3: Insert into `player` table
+    const { error: insertError } = await supabase
+      .from("player")
+      .insert({ id: data.user.id, username });
+
+    if (insertError) {
+      // Optional: Roll back auth user if you want (requires admin API)
+      throw insertError;
     }
-  };
+
+    router.push("/protected");
+  } catch (error: unknown) {
+    setError(error instanceof Error ? error.message : "An unexpected error occurred.");
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -75,6 +97,18 @@ export function SignUpForm({
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="grid gap-2">
+                <div className="flex items-center">
+                  <Label htmlFor="username">Username</Label>
+                </div>
+                <Input
+                  id="username"
+                  type="username"
+                  required
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
               <div className="grid gap-2">

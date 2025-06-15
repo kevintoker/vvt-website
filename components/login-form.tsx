@@ -15,6 +15,9 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { hasEnvVars } from "@/lib/utils";
+import { EnvVarWarning } from "@/components/env-var-warning";
+import { AuthButton } from "@/components/auth-button";
 
 export function LoginForm({
   className,
@@ -48,7 +51,20 @@ export function LoginForm({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    
+    <div className={cn("flex flex-col gap-3", className)} {...props}>
+      <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
+          <div className="w-full max-w-5xl flex justify-center items-center p-3 px-5 text-sm">
+            <div className="flex items-center font-semibold ">
+                <Link
+                href="/"
+                className="mb-3.5 px-5 py-3 text-lg font-bold border border-foreground/20 rounded-md hover:bg-foreground/5 transition-colors"
+                >
+                Valorant at Virginia Tech
+                </Link>
+            </div>
+          </div>  
+        </nav>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
