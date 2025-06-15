@@ -1,12 +1,19 @@
-import { DeployButton } from "@/components/deploy-button";
+import { DeployButton } from "@/components/button";
 import { EnvVarWarning } from "@/components/env-var-warning";
 import { AuthButton } from "@/components/auth-button";
 import { Hero } from "@/components/hero";
+import { HeroV2 } from "@/components/herov2";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-steps";
 import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
 import { hasEnvVars } from "@/lib/utils";
+import { Button } from "../components/ui/button";
 import Link from "next/link";
+import StaffCarousel from "./staff-carousel";
+import { FaXTwitter, FaInstagram } from "react-icons/fa6";
+
+
+const ICON_SIZE = 64;
 
 export default function Home() {
   return (
@@ -15,35 +22,55 @@ export default function Home() {
         <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
           <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
             <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>Next.js Supabase Starter</Link>
+              <Link href={"/"}>Valorant at Virginia Tech</Link>
               <div className="flex items-center gap-2">
-                <DeployButton />
-              </div>
+                <>
+                  <Button className="flex items-center gap-2" size="sm">
+                    <span>Teams</span>
+                  </Button>
+                  <Button className="flex items-center gap-2" size="sm">
+                    <span>Tryouts</span>
+                  </Button>
+                </>
+              </div>  
             </div>
             {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
-          </div>
+          </div>  
         </nav>
-        <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
-          <Hero />
-          <main className="flex-1 flex flex-col gap-6 px-4">
-            <h2 className="font-medium text-xl mb-4">Next steps</h2>
-            {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-          </main>
-        </div>
-
-        <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-          <p>
-            Powered by{" "}
-            <a
-              href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-              target="_blank"
-              className="font-bold hover:underline"
-              rel="noreferrer"
-            >
-              Supabase
+        <div className="flex-1 flex flex-col gap-5 max-w-5xl p-1">
+          <HeroV2 />
+          <p className="text-3xl lg:text-4xl !leading-tight font-light mx-auto max-w-xl text-center">Meet the Staff!</p>
+          <StaffCarousel />
+        </div>  
+        <footer className="w-full flex flex-col items-center justify-center border-t mx-auto text-center gap-4 py-8">
+          <div className="flex gap-4">
+            <a href="https://x.com/VirginiaTechVAL" target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" className="w-10 h-10">
+                <FaXTwitter className="!w-8 !h-8 text-muted-foreground" />
+              </Button>
             </a>
-          </p>
-          <ThemeSwitcher />
+            <a href="https://www.instagram.com/vt_valorantt/" target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" className="w-10 h-10">
+                <FaInstagram className="!w-8 !h-8 text-muted-foreground" />
+              </Button>
+            </a>
+          </div>
+          <p className="text-muted-foreground text-xs text-white">Developed and maintained by{' '} <a
+            href="https://www.linkedin.com/in/kevin-toker-14272024b/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-white"
+              >Kevin Toker</a>,{' '} <a
+            href="https://www.linkedin.com/in/marcoli1/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-white"
+              >Marco Li</a>,{' '} and <a
+            href="https://www.linkedin.com/in/cody-cockrell/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-white"
+              >Cody Cockrell</a></p>
         </footer>
       </div>
     </main>
