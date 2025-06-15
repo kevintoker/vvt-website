@@ -26,7 +26,7 @@ export default function Home() {
               <div className="flex items-center gap-2">
                 <>
                   <Button className="flex items-center gap-2" size="sm">
-                    <span>Teams</span>
+                    <Link href={"/teams/premier/"}>Teams</Link>
                   </Button>
                   <Button className="flex items-center gap-2" size="sm">
                     <span>Tryouts</span>
