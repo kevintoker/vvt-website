@@ -19,24 +19,6 @@ export default function Home() {
   return (
     <main className="min-h-screen flex flex-col items-center">
       <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-          <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-            <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>Valorant at Virginia Tech</Link>
-              <div className="flex items-center gap-2">
-                <>
-                  <Button className="flex items-center gap-2" size="sm">
-                    <span>Teams</span>
-                  </Button>
-                  <Button className="flex items-center gap-2" size="sm">
-                    <span>Tryouts</span>
-                  </Button>
-                </>
-              </div>  
-            </div>
-            {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
-          </div>  
-        </nav>
         <div className="flex-1 flex flex-col gap-5 max-w-5xl p-1">
           <HeroV2 />
           <p className="text-3xl lg:text-4xl !leading-tight font-light mx-auto max-w-xl text-center">Meet the Staff!</p>
