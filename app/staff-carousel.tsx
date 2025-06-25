@@ -14,6 +14,15 @@ import will from "./public/will.jpeg";
 import joe from "./public/joe.png";
 import nishil from "./public/nishil.png";
 
+// import { createClient } from "@/lib/supabase/server";
+
+// const supabase = await createClient();
+
+
+// const { data, error } = await supabase.storage
+//   .from("profiles") // ← your bucket name
+//   .list(""); // ← folder path (or "" for root)
+
 export default function StaffCarousel() {
   // Sample staff data - replace with your actual data
   const staffMembers = [
