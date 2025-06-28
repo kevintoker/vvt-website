@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { hasEnvVars } from "@/lib/utils";
 import { EnvVarWarning } from "@/components/env-var-warning";
@@ -12,34 +13,49 @@ import {
 
 export default function Navbar() {
   return (
-    <nav className="w-full relative flex items-center justify-between h-16 border-b border-b-foreground/10 px-4">
-      <Link href={"/"}>Valorant at Virginia Tech</Link>
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-5 items-center font-semibold">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="nav" size="sm">
-              Teams
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent side="bottom" align="start">
-            <DropdownMenuItem asChild>
-              <Link href="/teams/premier">Premier</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/teams/signature">Signature</Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <span className="opacity-50">|</span>
-        <Button variant="nav" size="sm">
-          <Link href={"/"}>Staff</Link>
-        </Button>
-        <span className="opacity-50">|</span>
-        <Button variant="nav" size="sm">
-          <Link href={"/"}>Tryouts</Link>
-        </Button>
+    <nav className="w-full border-b border-[#861F41] from-transparent bg-background pr-4">
+      <div className="max-w-5xl mx-auto flex items-center h-16 px-4">
+        {/* Left: Logo */}
+        <div className="flex-1 flex items-center min-w-0">
+          <Button
+            variant="nav"
+            size="lg"
+            className="transition-colors hover:bg-[#861F41] hover:text-white"
+          >
+          <Link href={"/"}>Valorant at Virginia Tech</Link>
+          </Button>
+        </div>
+        {/* Center: Nav Links */}
+        <div className="flex-1 flex justify-center items-center gap-5 font-semibold text-xl">
+          <Button
+            variant="nav"
+            size="lg"
+            className="transition-colors hover:bg-[#861F41] hover:text-white"
+          >
+            <Link href="/members">Members</Link>
+          </Button>
+          <span className="opacity-50">|</span>
+          <Button
+            variant="nav"
+            size="lg"
+            className="transition-colors hover:bg-[#861F41] hover:text-white"
+          >
+            <Link href={"/staff"}>Staff</Link>
+          </Button>
+          <span className="opacity-50">|</span>
+          <Button
+            variant="nav"
+            size="lg"
+            className="transition-colors hover:bg-[#861F41] hover:text-white"
+          >
+            <Link href={"/"}>Tryouts</Link>
+          </Button>
+        </div>
+        {/* Right: Auth/Env */}
+        <div className="flex-1 flex justify-end items-center min-w-0">
+          {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
+        </div>
       </div>
-      <div>{!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}</div>
     </nav>
   );
 }

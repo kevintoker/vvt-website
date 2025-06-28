@@ -3,8 +3,8 @@ import VVT from "../app/public/VVT.png";
 
 export function HeroV2() {
   return (
-    <div className="flex flex-col gap-8 items-center">
-      <div className="flex gap-8 justify-center items-center">
+    <div className="flex flex-col items-center justify-center pt-6 pb-6">
+      <div className="flex flex-col items-center justify-center gap-4">
         <a>
           <Image
             src={VVT}
@@ -14,9 +14,11 @@ export function HeroV2() {
             className="rounded-full object-cover w-32 h-32"
           />
         </a>
+        <p className="text-3xl lg:text-4xl !leading-tight font-light text-center">
+          Valorant at Virginia Tech
+        </p>
       </div>
-        <p className="text-3xl lg:text-4xl !leading-tight font-light mx-auto max-w-xl text-center">Valorant at Virginia Tech</p>
-      <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-0" />
+      <div className="w-3/4 h-px bg-gradient-to-r from-transparent via-[#861F41] to-transparent mt-8" />
     </div>
   );
 }

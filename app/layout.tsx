@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import Link from "next/link";
-import { hasEnvVars } from "@/lib/utils";
-import { EnvVarWarning } from "@/components/env-var-warning";
-import { Button } from "../components/ui/button";
-import { AuthButton } from "@/components/auth-button";
 import Navbar from "@/components/ui/Navbar";
+import { GlobalLoadingProvider } from "@/components/global-loading-provider";
+import { PageFade } from "@/components/page-fade";
+import { RouteFadeOverlayProvider } from "@/components/route-fade-overlay-context";
+import { RouteFadeOverlay } from "@/components/route-fade-overlay";
+// ...other imports...
 
 
 const defaultUrl = process.env.VERCEL_URL
@@ -31,16 +31,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased`}>
+    <html lang="en" className="vt">
+      <head>
+        <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&display=swap" rel="stylesheet" />
+      </head>
+      <body className="antialiased h-screen">
         <ThemeProvider
           attribute="class"
           defaultTheme="vt"
-          enableSystem
+          enableSystem={false}
           disableTransitionOnChange
         >
-          <Navbar />
-          {children}
+          <RouteFadeOverlayProvider>
+            <RouteFadeOverlay />
+            <GlobalLoadingProvider>
+            <PageFade>
+              <Navbar />
+              {children}
+            </PageFade>
+            </GlobalLoadingProvider>
+          </RouteFadeOverlayProvider>
         </ThemeProvider>
       </body>
     </html>

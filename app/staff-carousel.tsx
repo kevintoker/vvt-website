@@ -13,6 +13,7 @@ import tatum from "./public/tatum.png";
 import will from "./public/will.jpeg";
 import joe from "./public/joe.png";
 import nishil from "./public/nishil.png";
+import { motion, AnimatePresence } from "framer-motion";
 
 // import { createClient } from "@/lib/supabase/server";
 
@@ -73,20 +74,36 @@ export default function StaffCarousel() {
 
         {/* Staff Cards Container */}
         <div className="flex-1 overflow-hidden">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {getCurrentItems().map((member, index) => (
-              <div key={currentIndex + index} className="flex justify-center">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-2xl text-center">{member.title}</CardTitle>
-                    <CardDescription imageUrl={member.imageUrl} className="text-white">
-                      {member.name}
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-              </div>
-            ))}
-          </div>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, x: 40 }}      // <-- horizontal slide in
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -40 }}        // <-- horizontal slide out
+              transition={{ duration: 0.4 }}
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+            >
+              {getCurrentItems().map((member, index) => (
+                <div key={currentIndex + index} className="flex justify-center">
+                  <Card>
+                    <CardHeader className="flex flex-col items-center">
+                      <div className="w-20 h-20 mb-2 flex items-center justify-center">
+                        <img
+                          src={member.imageUrl.src}
+                          alt={member.name}
+                          className="w-full h-full object-cover rounded-full shadow "
+                        />
+                      </div>
+                      <CardTitle className="text-2xl text-center">{member.title}</CardTitle>
+                      <CardDescription className="text-black text-center font-bold">
+                        {member.name}
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                </div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {/* Next Arrow */}
