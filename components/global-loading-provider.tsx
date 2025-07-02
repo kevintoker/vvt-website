@@ -94,7 +94,7 @@ function TypingText({ text }: { text: string }) {
 
 function BlockRevealText({ text }: { text: string }) {
   return (
-    <span className="block-reveal-text">{text}
+    <span className="block-reveal-text">{text} 
       <style jsx>{`
         .block-reveal-text {
           display: inline-block;
@@ -143,7 +143,7 @@ export function GlobalLoadingProvider({ children }: { children: React.ReactNode 
   return (
     <LoadingContext.Provider value={{ loading }}>
       {hydrated && loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-white z-[9999]">
+        <div className="fixed inset-0 flex items-center justify-center z-[9999]" style={{ backgroundColor: "hsl(var(--background))"}}>
           <BlockRevealText text="Valorant At Virginia Tech" />
         </div>
       )}

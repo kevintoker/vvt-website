@@ -23,19 +23,10 @@ export default function Home() {
           {/* Left: English Text */}
           <div className="flex-1 flex items-start">
             <h1 className="text-white text-[5vw] leading-tight font-extrabold">
-              Make history where no one has touched.
+              Make history <br></br>where no one <br></br>has touched.
             </h1>
           </div>
           {/* Center: Logo */}
-            <div className="flex-shrink-0 flex items-center justify-center px-4">
-              <div className="transition-transform duration-300 hover:scale-105">
-                <Image
-                  src={VVT}
-                  alt="Logo"
-                  className="w-[42rem] h-[42rem] object-contain"
-                />
-              </div>
-            </div>
           {/* Right: Japanese Text */}
           <div className="flex-1 flex items-start justify-end">
             <div className="text-white text-xl overflow-y-auto leading-relaxed w-full max-w-xs font-extrabold">
@@ -47,20 +38,20 @@ export default function Home() {
         </div>
       </div>
       {/* Footer */}
-      <footer className="w-full flex flex-col items-center justify-center border-t border-primary-200 mx-auto text-center gap-4 py-8 mb-0">
+      <footer className="w-full flex flex-col items-center justify-center border-t border-[#861F41] mx-auto text-center gap-4 py-8 mb-0">
         <div className="flex gap-4">
           <a href="https://x.com/VirginiaTechVAL" target="_blank" rel="noopener noreferrer">
             <Button variant="ghost" className="w-10 h-10">
-              <FaXTwitter className="!w-8 !h-8 !text-black" />
+              <FaXTwitter className="!w-8 !h-8 !text-white" />
             </Button>
           </a>
           <a href="https://www.instagram.com/vt_valorantt/" target="_blank" rel="noopener noreferrer">
             <Button variant="ghost" className="w-10 h-10">
-              <FaInstagram style={{ color: "white" }} className="!w-8 !h-8 !text-black" />
+              <FaInstagram style={{ color: "white" }} className="!w-8 !h-8 !text-white" />
             </Button>
           </a>
         </div>
-        <p className="text-muted-foreground text-xs !text-black">
+        <p className="text-muted-foreground text-xs !text-white">
           Developed and maintained by{' '} <a
             href="https://www.linkedin.com/in/kevin-toker-14272024b/"
             target="_blank"

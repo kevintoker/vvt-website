@@ -31,17 +31,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="vt">
+    <html lang="en" className="dark">
       <head>
         <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&display=swap" rel="stylesheet" />
       </head>
       <body className="antialiased h-screen">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="vt"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
           <RouteFadeOverlayProvider>
             <RouteFadeOverlay />
             <GlobalLoadingProvider>
@@ -51,7 +45,6 @@ export default function RootLayout({
             </PageFade>
             </GlobalLoadingProvider>
           </RouteFadeOverlayProvider>
-        </ThemeProvider>
       </body>
     </html>
   );

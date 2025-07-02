@@ -17,10 +17,10 @@ export default function Navbar() {
       <div className="max-w-5xl mx-auto flex items-center h-16 px-4">
         {/* Left: Logo */}
         <div className="flex-1 flex items-center min-w-0">
-          <Button
+          <Button 
             variant="nav"
             size="lg"
-            className="transition-colors hover:bg-[#861F41] hover:text-white"
+            className="transition-colors hover:bg-[#861F41] hover:text-white text-white"
           >
           <Link href={"/"}>Valorant at Virginia Tech</Link>
           </Button>
@@ -30,7 +30,7 @@ export default function Navbar() {
           <Button
             variant="nav"
             size="lg"
-            className="transition-colors hover:bg-[#861F41] hover:text-white"
+            className="transition-colors hover:bg-[#861F41] hover:text-white text-white"
           >
             <Link href="/members">Members</Link>
           </Button>
@@ -38,7 +38,7 @@ export default function Navbar() {
           <Button
             variant="nav"
             size="lg"
-            className="transition-colors hover:bg-[#861F41] hover:text-white"
+            className="transition-colors hover:bg-[#861F41] hover:text-white text-white"
           >
             <Link href={"/staff"}>Staff</Link>
           </Button>
@@ -46,7 +46,7 @@ export default function Navbar() {
           <Button
             variant="nav"
             size="lg"
-            className="transition-colors hover:bg-[#861F41] hover:text-white"
+            className="transition-colors hover:bg-[#861F41] hover:text-white text-white"
           >
             <Link href={"/"}>Tryouts</Link>
           </Button>

@@ -85,7 +85,7 @@ export default function StaffCarousel() {
             >
               {getCurrentItems().map((member, index) => (
                 <div key={currentIndex + index} className="flex justify-center">
-                  <Card>
+                  <Card className="border border-[#861F41]">
                     <CardHeader className="flex flex-col items-center">
                       <div className="w-20 h-20 mb-2 flex items-center justify-center">
                         <img
@@ -95,7 +95,7 @@ export default function StaffCarousel() {
                         />
                       </div>
                       <CardTitle className="text-2xl text-center">{member.title}</CardTitle>
-                      <CardDescription className="text-black text-center font-bold">
+                      <CardDescription className="text-white text-center font-bold">
                         {member.name}
                       </CardDescription>
                     </CardHeader>
