@@ -18,25 +18,26 @@ export default function Home() {
                background: "linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.35) 100%), rgba(0,0,0,0.3)"
              }}
         />
+        
         {/* Your content here, make sure it's above the video */}
         <div className="relative z-20 flex w-full">
-          {/* Left: English Text */}
-          <div className="flex-1 flex items-start">
-            <h1 className="text-white text-[5vw] leading-tight font-extrabold">
-              Make history <br></br>where no one <br></br>has touched.
-            </h1>
-          </div>
-          {/* Center: Logo */}
-          {/* Right: Japanese Text */}
-          <div className="flex-1 flex items-start justify-end">
-            <div className="text-white text-xl overflow-y-auto leading-relaxed w-full max-w-xs font-extrabold">
-              Valorant at Virginia Tech aspires to bring together students who are interested and passionate about Valorant, in developing a club with a strong sense of community.<br /><br />
-              Our organization aims to develop the interpersonal and strategic life skills of all our members in and out of the game.<br /><br />
-              Combat gaming stigmas to ensure the inclusivity of marginalized and diverse backgrounds, provide opportunities for students seeking experience and networks in the esports field, and compete at the highest level within Valorant collegiate competition.
+          {/* Left: Hero text */}
+          <div className="flex-1 flex items-start pt-96">
+            <div className="flex flex-col">
+              {/* Small header text */}
+              <p className="text-white text-lg md:text-2xl font-medium tracking-wider uppercase">
+                Create the things you wish existed
+              </p>
+              {/* Main hero text */}
+              <h1 className="text-white text-[5vw] leading-tight font-extrabold uppercase tracking-tight">
+                Strive for<br />
+                the future
+              </h1>
             </div>
           </div>
         </div>
       </div>
+      
       {/* Footer */}
       <footer className="w-full flex flex-col items-center justify-center border-t border-[#861F41] mx-auto text-center gap-4 py-8 mb-0">
         <div className="flex gap-4">
