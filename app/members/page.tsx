@@ -52,7 +52,6 @@ const toPublicUrl = (path?: string) => {
     .publicUrl;
 };
 
-/* ──────────────────────────────── types ───────────────────────────────────── */
 interface MemberCard {
   id: number | string;
   team?: string | "N/A";
