@@ -116,7 +116,7 @@
 .bg-vvt-banner {
   position: relative;
   z-index: 0;
-  background-image: url("./public/VVT_banner.png"); /* Replace with your banner image */
+  background-image: url("../public/vvtbanner1_nosocials.png"); /* Replace with your banner image */
   background-size: cover;
   background-position: 48.5% center;
   background-repeat: no-repeat;
