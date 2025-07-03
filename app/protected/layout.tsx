@@ -1,6 +1,5 @@
 import { EnvVarWarning } from "@/components/env-var-warning";
 import { AuthButton } from "@/components/auth-button";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 import { hasEnvVars } from "@/lib/utils";
 import { Button } from "../../components/ui/button";
 import Link from "next/link";
@@ -20,7 +19,6 @@ export default function ProtectedLayout({
           </div>
         </div>
       </main>
-
       <footer className="w-full border-t border-[#861F41] bg-background mt-auto">
         <div className="max-w-5xl mx-auto flex items-center justify-center h-16 px-4">
           <div className="flex items-center gap-4">

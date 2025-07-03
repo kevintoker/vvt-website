@@ -1,4 +1,3 @@
-import { HeroV2 } from "@/components/herov2";
 import { Button } from "../components/ui/button";
 import StaffCarousel from "./staff-carousel";
 import { FaXTwitter, FaInstagram, FaSquareXTwitter } from "react-icons/fa6";
