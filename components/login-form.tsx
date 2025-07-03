@@ -52,8 +52,8 @@ export function LoginForm({
   return (
     <div className={cn("flex flex-col gap-3 min-h-[60vh] relative", className)} {...props}>
       {isLoading ? (
-        <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: "hsl(var(--background))" }}>
-        <Hatch size={48} stroke={4} speed={3.5} color="#861F41" />
+        <div className="fixed inset-0 z-0 flex items-center justify-center">
+          <Hatch size={48} stroke={4} speed={3.5} color="#861F41" />
         </div>
       ) : (
         <Card>
