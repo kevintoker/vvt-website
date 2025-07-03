@@ -46,6 +46,59 @@ const dummyMembers = [
     twitch_url: "",
     profile_url: "#",
   },
+  {
+    id: 5,
+    name: "Player 4",
+    role: "VALORANT",
+    image_url: kev,
+    youtube_url: "",
+    twitch_url: "",
+    profile_url: "#",
+  },{
+    id: 6,
+    name: "Player 4",
+    role: "VALORANT",
+    image_url: kev,
+    youtube_url: "",
+    twitch_url: "",
+    profile_url: "#",
+  },
+  {
+    id: 7,
+    name: "Player 4",
+    role: "VALORANT",
+    image_url: kev,
+    youtube_url: "",
+    twitch_url: "",
+    profile_url: "#",
+  },
+  {
+    id: 8,
+    name: "Player 4",
+    role: "VALORANT",
+    image_url: kev,
+    youtube_url: "",
+    twitch_url: "",
+    profile_url: "#",
+  },
+  {
+    id: 9,
+    name: "Player 4",
+    role: "VALORANT",
+    image_url: kev,
+    youtube_url: "",
+    twitch_url: "",
+    profile_url: "#",
+  },
+  {
+    id: 10,
+    name: "Player 4",
+    role: "VALORANT",
+    image_url: kev,
+    youtube_url: "",
+    twitch_url: "",
+    profile_url: "#",
+  },
 ];
 
 export default function MembersPage() {
@@ -67,8 +120,8 @@ export default function MembersPage() {
   }
 
   return (
-    <>
-      <main className="min-h-screen text-white px-4 py-8" style={{ backgroundColor: "hsl(var(--background))" }}>
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: "hsl(var(--background))" }}>
+      <main className="flex-1 text-white px-4 py-8 pt-24">
         <AnimatePresence>
           <motion.div
             className="flex flex-wrap gap-8 justify-center"
@@ -139,38 +192,48 @@ export default function MembersPage() {
           </motion.div>
         </AnimatePresence>
       </main>
-      <footer className="w-full flex flex-col items-center justify-center border-t border-[#861F41] mx-auto text-center gap-4 py-8 mb-0">
-        <div className="flex gap-4">
-          <a href="https://x.com/VirginiaTechVAL" target="_blank" rel="noopener noreferrer">
-            <Button variant="ghost" className="w-10 h-10">
-              <FaXTwitter className="!w-8 !h-8 !text-white" />
-            </Button>
-          </a>
-          <a href="https://www.instagram.com/vt_valorantt/" target="_blank" rel="noopener noreferrer">
-            <Button variant="ghost" className="w-10 h-10">
-              <FaInstagram style={{ color: "white" }} className="!w-8 !h-8 !text-white" />
-            </Button>
-          </a>
-        </div>
-        <p className="text-muted-foreground text-xs !text-white">
-          Developed and maintained by{' '} <a
-            href="https://www.linkedin.com/in/kevin-toker-14272024b/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-neutral-400"
-              >Kevin Toker</a>,{' '} <a
-            href="https://www.linkedin.com/in/marcoli1/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-neutral-400"
-              >Marco Li</a>,{' '} and <a
-            href="https://www.linkedin.com/in/cody-cockrell/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-neutral-400"
+      
+      <footer className="w-full border-t border-[#861F41] bg-background mt-auto">
+        <div className="max-w-5xl mx-auto flex items-center justify-center h-16 px-4">
+          <div className="flex items-center gap-4">
+            <div className="flex gap-4">
+              <a href="https://x.com/VirginiaTechVAL" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" className="w-10 h-10">
+                  <FaXTwitter className="!w-8 !h-8 !text-white" />
+                </Button>
+              </a>
+              <a href="https://www.instagram.com/vt_valorantt/" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" className="w-10 h-10">
+                  <FaInstagram style={{ color: "white" }} className="!w-8 !h-8 !text-white" />
+                </Button>
+              </a>
+            </div>
+            <div className="h-6 w-px bg-border mx-4"></div> {/* Optional separator */}
+            <p className="text-muted-foreground text-xs !text-white">
+              Developed and maintained by{' '}
+              <a
+                href="https://www.linkedin.com/in/kevin-toker-14272024b/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-neutral-400"
+              >Kevin Toker</a>,{' '}
+              <a
+                href="https://www.linkedin.com/in/marcoli1/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-neutral-400"
+              >Marco Li</a>,{' '}
+              and{' '}
+              <a
+                href="https://www.linkedin.com/in/cody-cockrell/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-neutral-400"
               >Cody Cockrell</a>
-        </p>
+            </p>
+          </div>
+        </div>
       </footer>
-    </>
+    </div>
   );
 }

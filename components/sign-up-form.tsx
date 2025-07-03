@@ -63,9 +63,13 @@ export function SignUpForm({
 
     // Step 3: Insert into `player` table
     const { error: insertError } = await supabase
-      .from("player")
-      .insert({ id: data.user.id, username });
-
+    .from("player")
+    .insert({
+      id: data.user.id,
+      username: username,
+      email: data.user.email, // Assuming data.user.email contains the user's email
+    });
+    
     if (insertError) {
       // Optional: Roll back auth user if you want (requires admin API)
       throw insertError;

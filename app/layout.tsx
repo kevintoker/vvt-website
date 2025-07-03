@@ -35,7 +35,7 @@ export default function RootLayout({
       <head>
         <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&display=swap" rel="stylesheet" />
       </head>
-      <body className="antialiased h-screen">
+      <body className="antialiased min-h-screen">
           <RouteFadeOverlayProvider>
             <RouteFadeOverlay />
             <GlobalLoadingProvider>
