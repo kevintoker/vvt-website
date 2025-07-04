@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { hasEnvVars } from "@/lib/utils";
 import { EnvVarWarning } from "@/components/env-var-warning";
@@ -17,39 +16,35 @@ export default function Navbar() {
       <div className="max-w-5xl mx-auto flex items-center h-16 px-4">
         {/* Left: Logo */}
         <div className="flex-1 flex items-center min-w-0">
-          <Button 
-            variant="nav"
-            size="lg"
-            className="transition-colors hover:bg-[#861F41] hover:text-white text-white"
+          <Link 
+            href="/"
+            className="px-6 py-2 rounded-md text-sm font-light transition-colors hover:bg-[#861F41] hover:text-white text-white"
           >
-          <Link href={"/"}>Valorant at Virginia Tech</Link>
-          </Button>
+            Valorant at Virginia Tech
+          </Link>
         </div>
         {/* Center: Nav Links */}
         <div className="flex-1 flex justify-center items-center gap-5 font-semibold text-xl">
-          <Button
-            variant="nav"
-            size="lg"
-            className="transition-colors hover:bg-[#861F41] hover:text-white text-white"
+          <Link
+            href="/members"
+            className="px-6 py-2 rounded-md text-sm font-light transition-colors hover:bg-[#861F41] hover:text-white text-white"
           >
-            <Link href="/members">Members</Link>
-          </Button>
+            Members
+          </Link>
           <span className="opacity-50">|</span>
-          <Button
-            variant="nav"
-            size="lg"
-            className="transition-colors hover:bg-[#861F41] hover:text-white text-white"
+          <Link
+            href="/staff"
+            className="px-6 py-2 rounded-md text-sm font-light transition-colors hover:bg-[#861F41] hover:text-white text-white"
           >
-            <Link href={"/protected"}>Profile</Link>
-          </Button>
+            Staff
+          </Link>
           <span className="opacity-50">|</span>
-          <Button
-            variant="nav"
-            size="lg"
-            className="transition-colors hover:bg-[#861F41] hover:text-white text-white"
+          <Link
+            href="/protected"
+            className="px-6 py-2 rounded-md text-sm font-light transition-colors hover:bg-[#861F41] hover:text-white text-white"
           >
-            <Link href={"/"}>Tryouts</Link>
-          </Button>
+            Profile
+          </Link>
         </div>
         {/* Right: Auth/Env */}
         <div className="flex-1 flex justify-end items-center min-w-0">

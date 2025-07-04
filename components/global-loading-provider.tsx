@@ -94,28 +94,37 @@ function TypingText({ text }: { text: string }) {
 
 function BlockRevealText({ text }: { text: string }) {
   return (
-    <span className="block-reveal-text">{text} 
-      <style jsx>{`
-        .block-reveal-text {
-          display: inline-block;
-          color: #861F41;
-          font-size: 4rem;
-          letter-spacing: 0px;
-          font-weight: 600;
-          text-transform: uppercase;
-          font-family: 'Satoshi', 'Inter', 'Arial', sans-serif; // changed here
-          position: relative;
-          overflow: hidden;
-          /* Start fully hidden */
-          clip-path: inset(0 100% 0 0);
-          animation: block-reveal 0.5s cubic-bezier(0.77,0,0.18,1) forwards;
-        }
-        @keyframes block-reveal {
-          to {
-            clip-path: inset(0 0 0 0);
-          }
-        }
-      `}</style>
+      <span className="block-reveal-text">{text} 
+        <style jsx>{`
+    .block-reveal-text {
+      display: inline-block;
+      color: #861F41;
+      font-size: 4rem;
+      letter-spacing: 0px;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-family: 'Satoshi', 'Inter', 'Arial', sans-serif;
+      position: relative;
+      overflow: hidden;
+      clip-path: inset(0 100% 0 0);
+      opacity: 1;
+      animation: 
+        block-reveal 0.25s cubic-bezier(0.77,0,0.18,1) forwards,
+        fade-out 0.25s ease 0.75s forwards;
+    }
+
+    @keyframes block-reveal {
+      to {
+        clip-path: inset(0 0 0 0);
+      }
+    }
+
+    @keyframes fade-out {
+      to {
+        opacity: 0;
+      }
+    }
+  `}</style>
     </span>
   );
 }
@@ -133,7 +142,7 @@ export function GlobalLoadingProvider({ children }: { children: React.ReactNode 
   useEffect(() => {
     setLoading(true);
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => setLoading(false), 2000);
+    timeoutRef.current = setTimeout(() => setLoading(false), 1000);
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };

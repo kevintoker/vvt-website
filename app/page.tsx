@@ -15,11 +15,11 @@ export default function Home() {
           <div className="flex-1 flex items-center justify-start">
             <div className="flex flex-col">
               {/* Small header text */}
-              <p className="text-white text-lg md:text-2xl font-medium tracking-wider uppercase pt-96">
+              <p className="text-white text-lg md:text-2xl font-medium tracking-wider uppercase pt-[510px] ml-8">
                 Create the things you wish existed
               </p>
               {/* Main hero text */}
-              <h1 className="text-white text-[5vw] leading-tight font-extrabold uppercase tracking-tight">
+              <h1 className="text-white text-[6vw] leading-tight font-extrabold uppercase tracking-tight ml-8">
                 Strive for<br />
                 the future
               </h1>

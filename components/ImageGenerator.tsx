@@ -57,7 +57,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4 }}
-      className={`rounded-2xl shadow ${className}`}
+      className={`shadow ${className}`}
     />
   );
 };
