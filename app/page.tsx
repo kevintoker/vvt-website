@@ -1,78 +1,75 @@
-import { DeployButton } from "@/components/button";
-import { EnvVarWarning } from "@/components/env-var-warning";
-import { AuthButton } from "@/components/auth-button";
-import { Hero } from "@/components/hero";
-import { HeroV2 } from "@/components/herov2";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-steps";
-import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
-import { hasEnvVars } from "@/lib/utils";
 import { Button } from "../components/ui/button";
-import Link from "next/link";
 import StaffCarousel from "./staff-carousel";
-import { FaXTwitter, FaInstagram } from "react-icons/fa6";
-
-
-const ICON_SIZE = 64;
+import { FaXTwitter, FaInstagram, FaSquareXTwitter } from "react-icons/fa6";
+import { BsTwitterX } from "react-icons/bs";
+import VVT from "./public/VVT Transparent.png";
+import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col items-center">
-      <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-          <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-            <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>Valorant at Virginia Tech</Link>
-              <div className="flex items-center gap-2">
-                <>
-                  <Button className="flex items-center gap-2" size="sm">
-                    <span>Teams</span>
-                  </Button>
-                  <Button className="flex items-center gap-2" size="sm">
-                    <span>Tryouts</span>
-                  </Button>
-                </>
-              </div>  
+    <div className="min-h-screen flex flex-col">
+      <div className="flex flex-1 items-center justify-center px-8 py-12 gap-8 relative overflow-hidden bg-vvt-banner">
+        {/* Your content here, make sure it's above the overlay */}
+        <div className="relative z-20 flex w-full">
+          {/* Left: Hero text */}
+          <div className="flex-1 flex items-center justify-start">
+            <div className="flex flex-col">
+              {/* Small header text */}
+              <p className="text-white text-lg md:text-2xl font-medium tracking-wider uppercase pt-[510px] ml-8">
+                Create the things you wish existed
+              </p>
+              {/* Main hero text */}
+              <h1 className="text-white text-[6vw] leading-tight font-extrabold uppercase tracking-tight ml-8">
+                Strive for<br />
+                the future
+              </h1>
             </div>
-            {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
-          </div>  
-        </nav>
-        <div className="flex-1 flex flex-col gap-5 max-w-5xl p-1">
-          <HeroV2 />
-          <p className="text-3xl lg:text-4xl !leading-tight font-light mx-auto max-w-xl text-center">Meet the Staff!</p>
-          <StaffCarousel />
-        </div>  
-        <footer className="w-full flex flex-col items-center justify-center border-t mx-auto text-center gap-4 py-8">
-          <div className="flex gap-4">
-            <a href="https://x.com/VirginiaTechVAL" target="_blank" rel="noopener noreferrer">
-              <Button variant="ghost" className="w-10 h-10">
-                <FaXTwitter className="!w-8 !h-8 text-muted-foreground" />
-              </Button>
-            </a>
-            <a href="https://www.instagram.com/vt_valorantt/" target="_blank" rel="noopener noreferrer">
-              <Button variant="ghost" className="w-10 h-10">
-                <FaInstagram className="!w-8 !h-8 text-muted-foreground" />
-              </Button>
-            </a>
           </div>
-          <p className="text-muted-foreground text-xs text-white">Developed and maintained by{' '} <a
-            href="https://www.linkedin.com/in/kevin-toker-14272024b/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-white"
-              >Kevin Toker</a>,{' '} <a
-            href="https://www.linkedin.com/in/marcoli1/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-white"
-              >Marco Li</a>,{' '} and <a
-            href="https://www.linkedin.com/in/cody-cockrell/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-white"
-              >Cody Cockrell</a></p>
-        </footer>
+        </div>
       </div>
-    </main>
+      
+      {/* Footer */}
+      <footer className="w-full border-t border-[#861F41] bg-background">
+        <div className="max-w-5xl mx-auto flex items-center justify-center h-16 px-4">
+          <div className="flex items-center gap-4">
+            <div className="flex gap-4">
+              <a href="https://x.com/VirginiaTechVAL" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" className="w-10 h-10">
+                  <FaXTwitter className="!w-8 !h-8 !text-white" />
+                </Button>
+              </a>
+              <a href="https://www.instagram.com/vt_valorantt/" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" className="w-10 h-10">
+                  <FaInstagram style={{ color: "white" }} className="!w-8 !h-8 !text-white" />
+                </Button>
+              </a>
+            </div>
+            <div className="h-6 w-px bg-border mx-4"></div> {/* Optional separator */}
+            <p className="text-muted-foreground text-xs !text-white">
+              Developed and maintained by{' '}
+              <a
+                href="https://www.linkedin.com/in/kevin-toker-14272024b/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-neutral-400"
+              >Kevin Toker</a>,{' '}
+              <a
+                href="https://www.linkedin.com/in/marcoli1/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-neutral-400"
+              >Marco Li</a>,{' '}
+              and{' '}
+              <a
+                href="https://www.linkedin.com/in/cody-cockrell/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-neutral-400"
+              >Cody Cockrell</a>
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }

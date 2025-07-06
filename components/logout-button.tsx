@@ -11,7 +11,12 @@ export function LogoutButton() {
     const supabase = createClient();
     await supabase.auth.signOut();
     router.push("/auth/login");
+    router.refresh(); // Refresh the page to ensure the user is logged out
   };
 
-  return <Button onClick={logout}>Logout</Button>;
+  return (
+    <Button size="sm" variant="outline" onClick={logout}>
+      Sign out
+    </Button>
+  );
 }
