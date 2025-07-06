@@ -720,10 +720,10 @@ const checkTryoutVerification = async (userEmail: string) => {
                   />
                 </div>
 
-                {/* Status Messages */}
+                {/* Status Messages - Member status above tryout status */}
                 <div className="mt-2 space-y-1">
-                  <VerificationStatus />
                   <MembershipStatus />
+                  <VerificationStatus />
                 </div>
 
                 {(imageUploading || errors.image || (status && (status.includes("Profile picture updated") || status.includes("Profile picture removed")))) && (
