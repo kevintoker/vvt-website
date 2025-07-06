@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import Navbar from "@/components/ui/Navbar";
+import Navbar from "../components/ui/Navbar";
 import { GlobalLoadingProvider } from "@/components/global-loading-provider";
 import { PageFade } from "@/components/page-fade";
 import { RouteFadeOverlayProvider } from "@/components/route-fade-overlay-context";
