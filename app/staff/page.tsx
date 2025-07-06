@@ -1,7 +1,7 @@
 "use client";
 import { FaYoutube, FaTwitch, FaLocationArrow, FaTimes } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
-import { FaXTwitter, FaInstagram } from "react-icons/fa6";
+import { FaXTwitter, FaInstagram, FaDiscord } from "react-icons/fa6";
 import { Hatch } from "ldrs/react";
 import "ldrs/react/Hatch.css";
 import { useEffect, useState } from "react";
@@ -55,7 +55,6 @@ const toPublicUrl = (path?: string) => {
 interface MemberCard {
   id: number | string;
   team?: string | "N/A";
-  admin_role?: string | "N/A";
   primary_role: string;
   secondary_role: string;
   username: string;
@@ -67,46 +66,54 @@ interface MemberCard {
   youtube_link?: string | null;
   twitch_link?: string | null;
   profile_picture: string;
+  admin_role: string;
 }
 
-// Define the expected structure of the database row
-interface PlayerRow {
+type RawMember = {
   id: number;
   team?: string;
-  admin_role?: string;
   primary_role: string;
   secondary_role: string;
   username: string;
   email: string;
   graduation_year: string;
   biography: string;
-  twitter_link?: string;
-  instagram_link?: string;
-  youtube_link?: string;
-  twitch_link?: string;
-  profile_picture?: string;
-}
+  twitter_link?: string | null;
+  instagram_link?: string | null;
+  youtube_link?: string | null;
+  twitch_link?: string | null;
+  profile_picture: string;
+  admin_role: string;
+};
+
+const FILTER_OPTIONS = [
+  { value: "ALL", label: "ALL" },
+  { value: "PREMIER", label: "PREMIER" },
+  { value: "SIGNATURE", label: "SIGNATURE" },
+];
 
 export default function MembersPage() {
   const [members, setMembers] = useState<MemberCard[]>([]);
+  const [filteredMembers, setFilteredMembers] = useState<MemberCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedMember, setExpandedMember] = useState<MemberCard | null>(null);
+  const [activeFilter, setActiveFilter] = useState("ALL");
 
   useEffect(() => {
     const load = async () => {
-      const { data, error } = await supabase
+      const { data, error: supabaseError } = await supabase
         .from("player")
         .select("*")
         .eq("admin", true)
         .order("id");
-        
-      if (error) {
-        console.error("Error loading members:", error.message);
+
+      if (supabaseError) {
+        console.error("Error loading members:", supabaseError.message);
         setLoading(false);
         return;
       }
 
-      const mapped: MemberCard[] = (data as PlayerRow[]).map((row) => ({
+      const mapped: MemberCard[] = (data as RawMember[]).map((row) => ({
         id: row.id,
         team: row.team,
         primary_role: row.primary_role,
@@ -132,18 +139,20 @@ export default function MembersPage() {
       }));
 
       setMembers(mapped);
+      setFilteredMembers(mapped);
       setLoading(false);
     };
 
     load();
   }, []);
 
+  const handleFilterChange = (filter: string) => {
+    setActiveFilter(filter);
+  };
+
   if (loading) {
     return (
-      <div
-        className="flex min-h-screen items-center justify-center"
-        style={{ backgroundColor: "hsl(var(--background))" }}
-      >
+      <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: "hsl(var(--background))" }}>
         <Hatch size={48} stroke={4} speed={3.5} color="#861F41" />
       </div>
     );
@@ -155,27 +164,29 @@ export default function MembersPage() {
       style={{ backgroundColor: "hsl(var(--background))" }}
     >
       <main className="flex-1 text-white px-4 py-8 pt-24">
-        <AnimatePresence>
+
+        <AnimatePresence mode="wait">
           <motion.div
+            key={activeFilter}
             className="flex flex-wrap gap-8 justify-center"
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 40 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
           >
-            {members.map((member, i) => (
+            {filteredMembers.map((member, i) => (
               <motion.div
                 key={member.id}
                 className="bg-black border-2 border-[#861F41] overflow-hidden w-[300px] flex flex-col"
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
               >
                 <div className="relative w-full h-72 bg-gray-900 flex items-center justify-center group overflow-hidden">
                   <ImageGenerator
                     path={member.profile_picture}
                     sourceType={ImageSourceType.URL}
-                    className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105 group-hover:brightness-75"
+                    className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                     alt={member.username}
                   />
                   <div className="absolute top-2 left-2 flex flex-col gap-2">
@@ -206,9 +217,11 @@ export default function MembersPage() {
                   style={{ backgroundColor: "hsl(var(--background))" }}
                 >
                   <span className="bg-[#861F41] text-white text-xs font-bold px-2 py-1 rounded-full w-fit mb-2">
-                    {member.admin_role || "Member"}
+                    {"Member"}
                   </span>
-                  <h2 className="text-4xl font-bold">{member.username}</h2>
+                  <h2 className="text-4xl font-bold truncate w-full">
+                    {member.username}
+                  </h2>
                   <button
                     onClick={() => setExpandedMember(member)}
                     className="flex items-center gap-2 mt-2 text-[#861F41] underline hover:text-white text-sm cursor-pointer"
@@ -221,6 +234,26 @@ export default function MembersPage() {
             ))}
           </motion.div>
         </AnimatePresence>
+
+        {/* No results message */}
+        {filteredMembers.length === 0 && !loading && (
+          <motion.div
+            className="text-center py-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <p className="text-gray-400 text-lg">
+              No members found for &quot;{activeFilter}&quot;
+            </p>
+            <button
+              onClick={() => setActiveFilter("ALL")}
+              className="mt-4 px-6 py-2 bg-[#861F41] text-white rounded-lg hover:bg-[#861F41]/80 transition-colors"
+            >
+              Show All Members
+            </button>
+          </motion.div>
+        )}
       </main>
 
       {/* Expanded Profile Modal */}
@@ -249,76 +282,85 @@ export default function MembersPage() {
                   <FaTimes size={24} />
                 </button>
                 
-                <div className="flex flex-col md:flex-row min-h-[250px]">
-                  <div className="relative w-full md:w-80 md:h-auto h-80 bg-gray-900 overflow-hidden">
+                <div className="flex flex-col md:flex-row h-[400px]"> {/* Fixed height instead of min-h */}
+                  <div className="relative w-full md:w-72 h-64 md:h-full bg-gray-900 overflow-hidden"> {/* Fixed height */}
                     <ImageGenerator
                       path={expandedMember.profile_picture}
                       sourceType={ImageSourceType.URL}
-                      className="object-cover w-full h-full scale-101"
+                      className="object-cover w-full h-full"
                       alt={expandedMember.username}
                     />
                   </div>
                   
-                  <div className="p-6 flex-1 text-white flex flex-col justify-between">
+                  <div className="p-6 flex-1 text-white flex flex-col overflow-y-hidden -space-y-0.5">
                     {/* Top Section - Header Info */}
                     <div className="space-y-2 pb-2">
                       <div className="flex items-center gap-2">
                         <span className="bg-[#861F41] text-white text-xs font-bold px-2 py-1 rounded-full">
-                          {expandedMember.admin_role || "Member"}
+                          {expandedMember.team || "Member"}
                         </span>
                         <span className="text-sm text-white">
                           Class of {expandedMember.graduation_year || "Unknown"}
                         </span>
                       </div>
                       
-                      <h1 className="text-4xl font-bold">{expandedMember.username}</h1>
+                      <h1 className="text-4xl font-bold break-words max-w-xs md:max-w-md">
+                        {expandedMember.username}
+                      </h1>
                     </div>
                     
                     {/* Middle Section - Role and Contact Info */}
-                    <div className="space-y-4 flex-1 flex flex-col justify-center">
+                    <div className="space-y-4 flex flex-col justify-center">
                       <div>
                         <h3 className="text-sm font-semibold text-[#861F41] mb-1">PRIMARY ROLE</h3>
                         <p className="text-white">{expandedMember.primary_role || "Unknown"}</p>
                       </div>
                       
-                      {expandedMember.secondary_role && (
-                        <div>
-                          <h3 className="text-sm font-semibold text-[#861F41] mb-1">SECONDARY ROLE</h3>
-                          <p className="text-white">{expandedMember.secondary_role || "Unknown"}</p>
-                        </div>
-                      )}
+                      {/* Secondary role - always rendered but hidden if empty */}
+                      <div className={expandedMember.secondary_role}>
+                        <h3 className="text-sm font-semibold text-[#861F41] mb-1">SECONDARY ROLE</h3>
+                        <p className="text-white">{expandedMember.secondary_role || "Unknown"}</p>
+                      </div>
                       
-                      {expandedMember.biography && (
-                        <div>
-                          <h3 className="text-sm font-semibold text-[#861F41] mb-2">BIOGRAPHY</h3>
-                          <p className="text-white leading-relaxed">{expandedMember.biography || "Unknown"}</p>
-                        </div>
-                      )}
+                      {/* Biography - always rendered but hidden if empty */}
+                      <div className={expandedMember.biography}>
+                        <h3 className="text-sm font-semibold text-[#861F41] mb-1">BIOGRAPHY</h3>
+                        <p className="text-white leading-relaxed break-words max-w-full overflow-hidden">
+                          {expandedMember.biography || "We don't know much about them!"}
+                        </p>
+                      </div>
                     </div>
                     
                     {/* Bottom Section - Social Links */}
                     <div className="pt-4">
                       <div className="flex gap-3">
-                        {expandedMember.youtube_link && (
-                          <IconLink href={expandedMember.youtube_link} hover="red-500">
+                        {/* YouTube - always rendered but hidden if no link */}
+                        <div className={expandedMember.youtube_link ? "block" : "hidden"}>
+                          <IconLink href={expandedMember.youtube_link || "#"} hover="red-500">
                             <FaYoutube size={20} />
                           </IconLink>
-                        )}
-                        {expandedMember.twitch_link && (
-                          <IconLink href={expandedMember.twitch_link} hover="purple-500">
+                        </div>
+                        
+                        {/* Twitch - always rendered but hidden if no link */}
+                        <div className={expandedMember.twitch_link ? "block" : "hidden"}>
+                          <IconLink href={expandedMember.twitch_link || "#"} hover="purple-500">
                             <FaTwitch size={20} />
                           </IconLink>
-                        )}
-                        {expandedMember.instagram_link && (
-                          <IconLink href={expandedMember.instagram_link} hover="pink-500">
+                        </div>
+                        
+                        {/* Instagram - always rendered but hidden if no link */}
+                        <div className={expandedMember.instagram_link ? "block" : "hidden"}>
+                          <IconLink href={expandedMember.instagram_link || "#"} hover="pink-500">
                             <FaInstagram size={20} />
                           </IconLink>
-                        )}
-                        {expandedMember.twitter_link && (
-                          <IconLink href={expandedMember.twitter_link} hover="sky-400">
+                        </div>
+                        
+                        {/* Twitter - always rendered but hidden if no link */}
+                        <div className={expandedMember.twitter_link ? "block" : "hidden"}>
+                          <IconLink href={expandedMember.twitter_link || "#"} hover="sky-400">
                             <FaXTwitter size={20} />
                           </IconLink>
-                        )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -328,36 +370,6 @@ export default function MembersPage() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <footer className="w-full border-t border-[#861F41] bg-background mt-auto">
-        <div className="max-w-5xl mx-auto flex items-center justify-center h-16 px-4">
-          <div className="flex items-center gap-4">
-            <div className="flex gap-4">
-              <ExternalButton href="https://x.com/VirginiaTechVAL">
-                <FaXTwitter className="!w-8 !h-8 !text-white" />
-              </ExternalButton>
-              <ExternalButton href="https://www.instagram.com/vt_valorantt/">
-                <FaInstagram className="!w-8 !h-8 !text-white" />
-              </ExternalButton>
-            </div>
-            <div className="h-6 w-px bg-border mx-4" />
-            <p className="text-muted-foreground text-xs !text-white">
-              Developed and maintained by{" "}
-              <FooterLink href="https://www.linkedin.com/in/kevin-toker-14272024b/">
-                Kevin Toker
-              </FooterLink>
-              ,{" "}
-              <FooterLink href="https://www.linkedin.com/in/marcoli1/">
-                Marco Li
-              </FooterLink>
-              , and{" "}
-              <FooterLink href="https://www.linkedin.com/in/cody-cockrell/">
-                Cody Cockrell
-              </FooterLink>
-            </p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

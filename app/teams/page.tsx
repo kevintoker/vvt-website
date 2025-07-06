@@ -1,7 +1,7 @@
 "use client";
 import { FaYoutube, FaTwitch, FaLocationArrow, FaTimes } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
-import { FaXTwitter, FaInstagram } from "react-icons/fa6";
+import { FaXTwitter, FaInstagram, FaDiscord } from "react-icons/fa6";
 import { Hatch } from "ldrs/react";
 import "ldrs/react/Hatch.css";
 import { useEffect, useState } from "react";
@@ -105,6 +105,7 @@ export default function MembersPage() {
         .from("player")
         .select("*")
         .eq("paid", true)
+        .in("team", ["Premier", "Signature"])
         .order("id");
 
       if (supabaseError) {
@@ -146,6 +147,17 @@ export default function MembersPage() {
     load();
   }, []);
 
+  useEffect(() => {
+    if (activeFilter === "ALL") {
+      setFilteredMembers(members);
+    } else {
+      const filtered = members.filter(
+        (member) => member.team?.toUpperCase() === activeFilter
+      );
+      setFilteredMembers(filtered);
+    }
+  }, [activeFilter, members]);
+
   const handleFilterChange = (filter: string) => {
     setActiveFilter(filter);
   };
@@ -164,6 +176,34 @@ export default function MembersPage() {
       style={{ backgroundColor: "hsl(var(--background))" }}
     >
       <main className="flex-1 text-white px-4 py-8 pt-24">
+        {/* Filter Buttons */}
+        <div className="flex justify-center mb-8">
+          <div className="flex flex-wrap gap-3 justify-center">
+            {FILTER_OPTIONS.map((option) => (
+              <button
+                key={option.value}
+                onClick={() => handleFilterChange(option.value)}
+                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 border-2 ${
+                  activeFilter === option.value
+                    ? "bg-[#861F41] text-white border-[#861F41] shadow-lg"
+                    : "bg-transparent text-white border-white/25 hover:bg-[#861F41]/20 hover:border-[#861F41]/50"
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Members Count */}
+        <div className="text-center mb-6">
+          <p className="text-gray-400 text-sm">
+            Showing {filteredMembers.length} of {members.length} members
+            {activeFilter !== "ALL" && (
+              <span className="text-[#861F41] ml-1">({activeFilter})</span>
+            )}
+          </p>
+        </div>
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -217,7 +257,7 @@ export default function MembersPage() {
                   style={{ backgroundColor: "hsl(var(--background))" }}
                 >
                   <span className="bg-[#861F41] text-white text-xs font-bold px-2 py-1 rounded-full w-fit mb-2">
-                    {"Member"}
+                    {member.team || "Member"}
                   </span>
                   <h2 className="text-4xl font-bold truncate w-full">
                     {member.username}
@@ -370,36 +410,6 @@ export default function MembersPage() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <footer className="w-full border-t border-[#861F41] bg-background mt-auto">
-        <div className="max-w-5xl mx-auto flex items-center justify-center h-16 px-4">
-          <div className="flex items-center gap-4">
-            <div className="flex gap-4">
-              <ExternalButton href="https://x.com/VirginiaTechVAL">
-                <FaXTwitter className="!w-8 !h-8 !text-white" />
-              </ExternalButton>
-              <ExternalButton href="https://www.instagram.com/vt_valorantt/">
-                <FaInstagram className="!w-8 !h-8 !text-white" />
-              </ExternalButton>
-            </div>
-            <div className="h-6 w-px bg-border mx-4" />
-            <p className="text-muted-foreground text-xs !text-white">
-              Developed and maintained by{" "}
-              <FooterLink href="https://www.linkedin.com/in/kevin-toker-14272024b/">
-                Kevin Toker
-              </FooterLink>
-              ,{" "}
-              <FooterLink href="https://www.linkedin.com/in/marcoli1/">
-                Marco Li
-              </FooterLink>
-              , and{" "}
-              <FooterLink href="https://www.linkedin.com/in/cody-cockrell/">
-                Cody Cockrell
-              </FooterLink>
-            </p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

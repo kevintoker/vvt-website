@@ -25,9 +25,9 @@ export async function AuthButton() {
 
   return user ? (
     <div className="flex items-center gap-4">
-      <span className="px-4 py-2 text-sm rounded-md bg-transparent text-000">
-        Hey, {username}!
-      </span>
+      <Button size="sm" variant="outline" className="pointer-events-none">
+      Hey, {username}!
+      </Button>
       <LogoutButton />
     </div>
   ) : (

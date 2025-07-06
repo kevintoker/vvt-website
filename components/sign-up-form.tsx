@@ -29,6 +29,7 @@ export function SignUpForm({
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
+  const [usernameError, setUsernameError] = useState<string | null>(null);
   const router = useRouter();
 
   // Email validation function
@@ -53,16 +54,37 @@ export function SignUpForm({
     }
   };
 
+  // Handle username input change with real-time validation
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newUsername = e.target.value;
+    
+    // Only allow up to 14 characters
+    if (newUsername.length <= 14) {
+      setUsername(newUsername);
+      setUsernameError(null);
+    } else {
+      setUsernameError("Username must be 14 characters or less");
+    }
+  };
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     const supabase = createClient();
     setIsLoading(true);
     setError(null);
     setEmailError(null);
+    setUsernameError(null);
 
     // Validate .edu email
     if (!validateEduEmail(email)) {
       setEmailError("Please use a valid .edu email address");
+      setIsLoading(false);
+      return;
+    }
+
+    // Validate username length
+    if (username.length > 14) {
+      setUsernameError("Username must be 14 characters or less");
       setIsLoading(false);
       return;
     }
@@ -159,16 +181,22 @@ export function SignUpForm({
                   )}
                 </div>
                 <div className="grid gap-2">
-                  <div className="flex items-center">
+                  <div className="flex items-center justify-between">
                     <Label htmlFor="username">Username</Label>
+                    <span className="text-xs text-gray-500">{username.length}/14</span>
                   </div>
                   <Input
                     id="username"
                     type="text"
                     required
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={handleUsernameChange}
+                    maxLength={14}
+                    className={usernameError ? "border-red-500" : ""}
                   />
+                  {usernameError && (
+                    <p className="text-sm text-red-500">{usernameError}</p>
+                  )}
                 </div>
                 <div className="grid gap-2">
                   <div className="flex items-center">
@@ -198,7 +226,7 @@ export function SignUpForm({
                 <Button 
                   type="submit" 
                   className="w-full bg-[#861F41] text-white" 
-                  disabled={isLoading || !!emailError}
+                  disabled={isLoading || !!emailError || !!usernameError}
                 >
                   {isLoading ? "Creating an account..." : "Sign up"}
                 </Button>

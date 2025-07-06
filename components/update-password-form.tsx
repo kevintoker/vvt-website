@@ -59,7 +59,6 @@ export function UpdatePasswordForm({
                 <Input
                   id="password"
                   type="password"
-                  placeholder="New password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
