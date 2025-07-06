@@ -64,15 +64,32 @@ interface MemberCard {
   biography: string;
   twitter_link?: string | null;
   instagram_link?: string | null;
-  youtube_link ?: string | null;
+  youtube_link?: string | null;
   twitch_link?: string | null;
   profile_picture: string;
+}
+
+// Define the expected structure of the database row
+interface PlayerRow {
+  id: number;
+  team?: string;
+  admin_role?: string;
+  primary_role: string;
+  secondary_role: string;
+  username: string;
+  email: string;
+  graduation_year: string;
+  biography: string;
+  twitter_link?: string;
+  instagram_link?: string;
+  youtube_link?: string;
+  twitch_link?: string;
+  profile_picture?: string;
 }
 
 export default function MembersPage() {
   const [members, setMembers] = useState<MemberCard[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [expandedMember, setExpandedMember] = useState<MemberCard | null>(null);
 
   useEffect(() => {
@@ -84,31 +101,33 @@ export default function MembersPage() {
         .order("id");
         
       if (error) {
-        setError(error.message);
+        console.error("Error loading members:", error.message);
         setLoading(false);
         return;
       }
 
-      const mapped: MemberCard[] = (data as any[]).map((row) => ({
+      const mapped: MemberCard[] = (data as PlayerRow[]).map((row) => ({
         id: row.id,
         team: row.team,
-        admin_role: row.admin_role,
         primary_role: row.primary_role,
         secondary_role: row.secondary_role,
         username: row.username,
         email: row.email,
+        admin_role: row.admin_role,
         graduation_year: row.graduation_year,
         biography: row.biography,
-        twitter_link: isTwitter(row.twitter_link)
-          ? withProto(row.twitter_link)
+        twitter_link: isTwitter(row.twitter_link ?? undefined)
+          ? withProto(row.twitter_link!)
           : null,
-        instagram_link: isInstagram(row.instagram_link)
-          ? withProto(row.instagram_link)
+        instagram_link: isInstagram(row.instagram_link ?? undefined)
+          ? withProto(row.instagram_link!)
           : null,
-        youtube_link: isYoutube(row.youtube_link)
-          ? withProto(row.youtube_link)
+        youtube_link: isYoutube(row.youtube_link ?? undefined)
+          ? withProto(row.youtube_link!)
           : null,
-        twitch_link: isTwitch(row.twitch_link) ? withProto(row.twitch_link) : null,
+        twitch_link: isTwitch(row.twitch_link ?? undefined)
+          ? withProto(row.twitch_link!)
+          : null,
         profile_picture: toPublicUrl(row.profile_picture),
       }));
 

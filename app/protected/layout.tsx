@@ -1,8 +1,4 @@
-import { EnvVarWarning } from "@/components/env-var-warning";
-import { AuthButton } from "@/components/auth-button";
-import { hasEnvVars } from "@/lib/utils";
 import { Button } from "../../components/ui/button";
-import Link from "next/link";
 import { FaXTwitter, FaInstagram } from "react-icons/fa6";
 
 export default function ProtectedLayout({

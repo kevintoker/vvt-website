@@ -1,9 +1,5 @@
 import { Button } from "../components/ui/button";
-import StaffCarousel from "./staff-carousel";
-import { FaXTwitter, FaInstagram, FaSquareXTwitter } from "react-icons/fa6";
-import { BsTwitterX } from "react-icons/bs";
-import VVT from "./public/VVT Transparent.png";
-import Image from "next/image";
+import { FaXTwitter, FaInstagram,} from "react-icons/fa6";
 
 export default function Home() {
   return (

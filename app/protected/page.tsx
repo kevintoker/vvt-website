@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { redirect } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 import { Hatch } from "ldrs/react";
 import "ldrs/react/Hatch.css";
-import { FaXTwitter, FaInstagram, FaTwitch } from "react-icons/fa6";
 
 import {
   Card,
@@ -63,7 +62,6 @@ export default function ProfilePage() {
     secondaryRole: "",
     image: ""
   });
-  const [showImageStatus, setShowImageStatus] = useState(false);
 
   // Biography character limit
   const BIO_MAX_LENGTH = 135;
@@ -89,52 +87,52 @@ export default function ProfilePage() {
   ];
 
   // Solution 2: If you need to join based on email matching
-const checkTryoutVerification = async (userEmail: string) => {
-  setVerificationLoading(true);
-  try {
-    // First check if user exists in sheets table
-    const { data: sheetData, error: sheetError } = await supabase
-      .from("sheets")
-      .select("school_email")
-      .eq("school_email", userEmail)
-      .maybeSingle();
+  const checkTryoutVerification = useCallback(async (userEmail: string) => {
+    setVerificationLoading(true);
+    try {
+      // First check if user exists in sheets table
+      const { data: sheetData, error: sheetError } = await supabase
+        .from("sheets")
+        .select("school_email")
+        .eq("school_email", userEmail)
+        .maybeSingle();
 
-    if (sheetError) {
-      console.error("Sheet check error:", sheetError);
+      if (sheetError) {
+        console.error("Sheet check error:", sheetError);
+        setIsVerified(false);
+        return;
+      }
+
+      if (!sheetData) {
+        setIsVerified(false);
+        return;
+      }
+
+      // Then check if the same email has paid in player table
+      const { data: playerData, error: playerError } = await supabase
+        .from("player")
+        .select("paid")
+        .eq("email", userEmail)
+        .eq("paid", true)
+        .maybeSingle();
+
+      if (playerError) {
+        console.error("Player check error:", playerError);
+        setIsVerified(false);
+        return;
+      }
+
+      setIsVerified(!!playerData);
+    } catch (error) {
+      console.error("Verification check failed:", error);
       setIsVerified(false);
-      return;
+    } finally {
+      setVerificationLoading(false);
     }
-
-    if (!sheetData) {
-      setIsVerified(false);
-      return;
-    }
-
-    // Then check if the same email has paid in player table
-    const { data: playerData, error: playerError } = await supabase
-      .from("player")
-      .select("paid")
-      .eq("email", userEmail)
-      .eq("paid", true)
-      .maybeSingle();
-
-    if (playerError) {
-      console.error("Player check error:", playerError);
-      setIsVerified(false);
-      return;
-    }
-
-    setIsVerified(!!playerData);
-  } catch (error) {
-    console.error("Verification check failed:", error);
-    setIsVerified(false);
-  } finally {
-    setVerificationLoading(false);
-  }
-};
+  }, [supabase]);
 
   // Function to check membership status
-  const checkMembershipStatus = async (userEmail: string) => {
+  const checkMembershipStatus = useCallback(async (userEmail: string) => {
     setMembershipLoading(true);
     try {
       // Check if user has paid in the player table
@@ -159,57 +157,7 @@ const checkTryoutVerification = async (userEmail: string) => {
     } finally {
       setMembershipLoading(false);
     }
-  };
-
-  // Verification indicator component
-  const VerificationBadge = () => {
-    if (verificationLoading) {
-      return (
-        <div className="absolute -top-1 -right-1 w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center border-2 border-white">
-          <div className="w-3 h-3 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-        </div>
-      );
-    }
-
-    if (isVerified === null) return null;
-
-    return (
-      <div className={`absolute -top-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center border-2 border-white ${
-        isVerified ? 'bg-green-500' : 'bg-red-500'
-      }`}>
-        {isVerified ? (
-          <CheckCircle className="w-4 h-4 text-white" />
-        ) : (
-          <XCircle className="w-4 h-4 text-white" />
-        )}
-      </div>
-    );
-  };
-
-  // Membership indicator component
-  const MembershipBadge = () => {
-    if (membershipLoading) {
-      return (
-        <div className="absolute -top-1 -left-1 w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center border-2 border-white">
-          <div className="w-3 h-3 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-        </div>
-      );
-    }
-
-    if (isMember === null) return null;
-
-    return (
-      <div className={`absolute -top-1 -left-1 w-6 h-6 rounded-full flex items-center justify-center border-2 border-white ${
-        isMember ? 'bg-yellow-500' : 'bg-gray-400'
-      }`}>
-        {isMember ? (
-          <Crown className="w-4 h-4 text-white" />
-        ) : (
-          <X className="w-3 h-3 text-white" />
-        )}
-      </div>
-    );
-  };
+  }, [supabase]);
 
   // Verification status text
   const VerificationStatus = () => {
@@ -276,7 +224,7 @@ const checkTryoutVerification = async (userEmail: string) => {
   };
 
   // Function to calculate precise textarea height
-  const calculateTextareaHeight = (text: string | any[], baseHeight = 60) => {
+  const calculateTextareaHeight = (text: string, baseHeight = 60) => {
     if (!text) return baseHeight;
     
     const avgCharsPerLine = 50;
@@ -292,7 +240,7 @@ const checkTryoutVerification = async (userEmail: string) => {
     try {
       new URL(string);
       return true;
-    } catch (_) {
+    } catch {
       return false;
     }
   };
@@ -435,7 +383,7 @@ const checkTryoutVerification = async (userEmail: string) => {
       const { error: uploadError } = await supabase.storage
         .from('profile-pictures')
         .upload(filePath, file, {
-          cacheControl: '3600',
+          cacheControl: '7200',
           upsert: true
         });
 
@@ -493,8 +441,6 @@ const checkTryoutVerification = async (userEmail: string) => {
       
       setStatus("Upload failed. Please try again.");
       setTimeout(() => setStatus(""), 3000);
-      setShowImageStatus(true);
-      setTimeout(() => setShowImageStatus(false), 3000);
       
     } finally {
       setImageUploading(false);
@@ -536,8 +482,6 @@ const checkTryoutVerification = async (userEmail: string) => {
       setProfilePicture(null);
       setStatus("Profile picture removed successfully!");
       setTimeout(() => setStatus(""), 3000);
-      setShowImageStatus(true);
-      setTimeout(() => setShowImageStatus(false), 3000);
 
     } catch (error) {
       console.error('Image removal error:', error);
@@ -610,7 +554,7 @@ const checkTryoutVerification = async (userEmail: string) => {
     };
 
     getUserData();
-  }, [supabase]);
+  }, [supabase, checkMembershipStatus, checkTryoutVerification]);
 
   const handleSave = async () => {
     if (!user) return;
@@ -685,6 +629,7 @@ const checkTryoutVerification = async (userEmail: string) => {
                       src={profilePicture} 
                       alt="Profile" 
                       className="w-full h-full object-cover"
+                      style={{ minWidth: '96px', minHeight: '96px' }}
                     />
                   ) : (
                     <Camera className="w-8 h-8 text-gray-400" />
