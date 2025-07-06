@@ -1,4 +1,5 @@
 import * as React from "react";
+import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 import { StaticImageData } from "next/image";
@@ -52,10 +53,12 @@ const CardDescription = React.forwardRef<
     {...props}
   >
     {imageUrl && (
-      <img
-        src={typeof imageUrl === "string" ? imageUrl : imageUrl.src}
+      <Image
+        src={imageUrl}
         alt="Profile"
-        className="w-24 h-24 rounded-full mx-auto mb-2 color-white"
+        width={96}
+        height={96}
+        className="w-24 h-24 rounded-full mx-auto mb-2"
       />
     )}
     {children}

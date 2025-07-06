@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
-import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import Navbar from "../components/ui/Navbar";
 import { GlobalLoadingProvider } from "@/components/global-loading-provider";
@@ -18,12 +16,6 @@ export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
   title: "Valorant at Virginia Tech",
 };
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  display: "swap",
-  subsets: ["latin"],
-});
 
 export default function RootLayout({
   children,

@@ -114,6 +114,7 @@ export function SignUpForm({
           id: data.user.id,
           username: username,
           email: data.user.email,
+          team: "Member",
         });
       
       if (insertError) {

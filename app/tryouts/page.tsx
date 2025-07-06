@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Users, Trophy, DollarSign, CheckCircle } from 'lucide-react';
+import { Calendar, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { FaXTwitter, FaInstagram } from 'react-icons/fa6';
 import Link from 'next/link';

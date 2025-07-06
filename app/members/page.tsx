@@ -68,7 +68,22 @@ interface MemberCard {
   profile_picture: string;
 }
 
-// Filter options
+type RawMember = {
+  id: number;
+  team?: string;
+  primary_role: string;
+  secondary_role: string;
+  username: string;
+  email: string;
+  graduation_year: string;
+  biography: string;
+  twitter_link?: string | null;
+  instagram_link?: string | null;
+  youtube_link?: string | null;
+  twitch_link?: string | null;
+  profile_picture: string;
+};
+
 const FILTER_OPTIONS = [
   { value: "ALL", label: "ALL" },
   { value: "PREMIER", label: "PREMIER" },
@@ -79,25 +94,24 @@ export default function MembersPage() {
   const [members, setMembers] = useState<MemberCard[]>([]);
   const [filteredMembers, setFilteredMembers] = useState<MemberCard[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [expandedMember, setExpandedMember] = useState<MemberCard | null>(null);
   const [activeFilter, setActiveFilter] = useState("ALL");
 
   useEffect(() => {
     const load = async () => {
-      const { data, error } = await supabase
+      const { data, error: supabaseError } = await supabase
         .from("player")
         .select("*")
         .eq("paid", true)
         .order("id");
-        
-      if (error) {
-        setError(error.message);
+
+      if (supabaseError) {
+        console.error("Error loading members:", supabaseError.message);
         setLoading(false);
         return;
       }
 
-      const mapped: MemberCard[] = (data as any[]).map((row) => ({
+      const mapped: MemberCard[] = (data as RawMember[]).map((row) => ({
         id: row.id,
         team: row.team,
         primary_role: row.primary_role,
@@ -106,16 +120,18 @@ export default function MembersPage() {
         email: row.email,
         graduation_year: row.graduation_year,
         biography: row.biography,
-        twitter_link: isTwitter(row.twitter_link)
-          ? withProto(row.twitter_link)
+        twitter_link: isTwitter(row.twitter_link ?? undefined)
+          ? withProto(row.twitter_link!)
           : null,
-        instagram_link: isInstagram(row.instagram_link)
-          ? withProto(row.instagram_link)
+        instagram_link: isInstagram(row.instagram_link ?? undefined)
+          ? withProto(row.instagram_link!)
           : null,
-        youtube_link: isYoutube(row.youtube_link)
-          ? withProto(row.youtube_link)
+        youtube_link: isYoutube(row.youtube_link ?? undefined)
+          ? withProto(row.youtube_link!)
           : null,
-        twitch_link: isTwitch(row.twitch_link) ? withProto(row.twitch_link) : null,
+        twitch_link: isTwitch(row.twitch_link ?? undefined)
+          ? withProto(row.twitch_link!)
+          : null,
         profile_picture: toPublicUrl(row.profile_picture),
       }));
 
@@ -127,7 +143,6 @@ export default function MembersPage() {
     load();
   }, []);
 
-  // Filter members based on active filter
   useEffect(() => {
     if (activeFilter === "ALL") {
       setFilteredMembers(members);
@@ -145,10 +160,7 @@ export default function MembersPage() {
 
   if (loading) {
     return (
-      <div
-        className="flex min-h-screen items-center justify-center"
-        style={{ backgroundColor: "hsl(var(--background))" }}
-      >
+      <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: "hsl(var(--background))" }}>
         <Hatch size={48} stroke={4} speed={3.5} color="#861F41" />
       </div>
     );
@@ -266,7 +278,7 @@ export default function MembersPage() {
             transition={{ duration: 0.5 }}
           >
             <p className="text-gray-400 text-lg">
-              No members found for "{activeFilter}"
+              No members found for &quot;{activeFilter}&quot;
             </p>
             <button
               onClick={() => setActiveFilter("ALL")}
@@ -345,7 +357,9 @@ export default function MembersPage() {
                       {/* Biography - always rendered but hidden if empty */}
                       <div className={expandedMember.biography}>
                         <h3 className="text-sm font-semibold text-[#861F41] mb-2">BIOGRAPHY</h3>
-                        <p className="text-white leading-relaxed">{expandedMember.biography || "We don't know much about them!"}</p>
+                        <p className="text-white leading-relaxed">
+                          {expandedMember.biography || "We don't know much about them!"}
+                        </p>
                       </div>
                     </div>
                     

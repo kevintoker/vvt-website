@@ -1,6 +1,5 @@
 import { LoginForm } from "@/components/login-form";
 import { Button } from "@/components/ui/button";
-import { Hatch } from "ldrs/react";
 import "ldrs/react/Hatch.css";
 import { FaInstagram, FaXTwitter } from "react-icons/fa6";
 
